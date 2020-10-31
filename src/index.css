@@ -8,3 +8,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-size: calc(10px + 1.5vmin);
 }
+img {
+  height: fit-content;
+}
+h3 {
+  margin-top: 0;
+}
+.column {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 2px solid black;
+  padding: 15px 5px;
+}
+.book-info {
+  display: flex;
+  flex-direction: column;
+}

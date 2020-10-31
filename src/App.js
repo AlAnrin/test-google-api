@@ -1,43 +1,45 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
-import {setData} from "./Actions";
+import {setData, setTotalItems} from "./Actions";
+import BookCard from './BookCard';
 
 const mapStateToProps = store => {
     return {
         baseUrl: store.baseUrl,
         api: store.api,
-        data: store.data
+        data: store.data,
+        totalItems: store.totalItems
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        setDataAction: data => dispatch(setData(data))
+        setDataAction: data => dispatch(setData(data)),
+        setTotalItemsAction: totalItems => dispatch(setTotalItems(totalItems))
     }
 };
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {valueFind: ''};
-    }
+    valueFind = '';
 
     getDate = async (name) => {
         const api_call = await fetch(`${this.props.baseUrl}=${name}&key=${this.props.api}`);
 
         const response = await api_call.json();
 
+        this.props.setTotalItemsAction(response.totalItems);
         this.props.setDataAction(response.items);
     }
 
     handleChange(event) {
-        this.setState({valueFind: event.target.value})
+        this.valueFind = event.target.value;
     }
 
     keyPressEvent(event) {
         if(event.key === 'Enter'){
-            this.getDate(this.props.valueFind);
+            console.log(this.valueFind);
+            this.getDate(this.valueFind);
         }
     }
 
@@ -53,7 +55,7 @@ class App extends Component {
                             {
                                 this.props.data && this.props.data.length !== 0 &&
                                 this.props.data.map(item =>
-                                    <div key={item.id}>Booook {item.volumeInfo.title}</div>
+                                    <BookCard key={item.id} date={item}/>
                                 )
                             }
                         </div>

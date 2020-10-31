@@ -1,9 +1,10 @@
-import { SET_DATA } from './Actions'
+import { SET_DATA, SET_TOTAL_ITEMS } from './Actions'
 
 const initialState = {
     baseUrl: 'https://www.googleapis.com/books/v1/volumes?q',
     api: "AIzaSyBSgvdpNgfB_F992Tvobm3djh9Ie082AIM",
-    data: []
+    data: [],
+    totalItems: 0
 }
 
 export function Reducer(state = initialState, action) {
@@ -12,6 +13,11 @@ export function Reducer(state = initialState, action) {
             return {
                 ...state,
                 data: action.payload
+            }
+        case SET_TOTAL_ITEMS:
+            return {
+                ...state,
+                totalItems: action.payload
             }
         default:
             return state;
