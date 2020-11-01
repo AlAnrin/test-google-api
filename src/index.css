@@ -9,10 +9,20 @@ body {
   font-size: calc(10px + 1.5vmin);
 }
 img {
-  height: fit-content;
+  height: auto;
+  width: 100px;
+  margin: 10px 15px;
 }
 h3 {
   margin-top: 0;
+}
+@media screen and (max-width: 500px) {
+  img {
+    width: 50px !important;
+  }
+  body {
+    font-size: calc(7px + 1.5vmin);
+  }
 }
 .column {
   display: flex;
@@ -21,7 +31,10 @@ h3 {
   border-bottom: 2px solid black;
   padding: 15px 5px;
 }
-.book-info {
+.row {
   display: flex;
   flex-direction: column;
+}
+.book-info {
+  margin: 5px
 }

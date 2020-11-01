@@ -1,15 +1,23 @@
-import { SET_DATA, SET_TOTAL_ITEMS } from './Actions'
+import { SET_DATA, SET_TOTAL_ITEMS, SET_CURRENT_BOOK } from './Actions'
 
 const initialState = {
     baseUrl: 'https://www.googleapis.com/books/v1/volumes?q',
     api: "AIzaSyBSgvdpNgfB_F992Tvobm3djh9Ie082AIM",
     data: [],
-    totalItems: 0
+    currentBook: null,
+    totalItems: 0,
+    startIndex: 0,
+    maxResults: 10
 }
 
 export function Reducer(state = initialState, action) {
     switch (action.type) {
         case SET_DATA:
+            return {
+                ...state,
+                data: action.payload
+            }
+        case SET_CURRENT_BOOK:
             return {
                 ...state,
                 data: action.payload
