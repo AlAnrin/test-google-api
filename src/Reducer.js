@@ -1,4 +1,4 @@
-import { SET_DATA, SET_TOTAL_ITEMS, SET_CURRENT_BOOK } from './Actions'
+import { SET_DATA, SET_TOTAL_ITEMS, SET_CURRENT_BOOK, SET_MAX_RESULT } from './Actions'
 
 const initialState = {
     baseUrl: 'https://www.googleapis.com/books/v1/volumes?q',
@@ -26,6 +26,11 @@ export function Reducer(state = initialState, action) {
             return {
                 ...state,
                 totalItems: action.payload
+            }
+        case SET_MAX_RESULT:
+            return {
+                ...state,
+                maxResults: action.payload
             }
         default:
             return state;
