@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import missingImage from './images/1604222140385.png'
 import {connect} from "react-redux";
 import Icon from '@mdi/react';
 import {mdiArrowLeft, mdiFileImageOutline} from '@mdi/js';
@@ -41,7 +40,7 @@ class BookDetail extends Component {
             <div className="column">
                 {
                     this.props.currentBook.volumeInfo.imageLinks ?
-                        <img alt={missingImage} src={this.props.currentBook.volumeInfo.imageLinks.thumbnail}/> :
+                        <img alt={this.props.currentBook.volumeInfo.title} src={this.props.currentBook.volumeInfo.imageLinks.thumbnail}/> :
                         <div className="missing-image">
                             <Icon className="missing-image-icon" path={mdiFileImageOutline} size={2}/>
                         </div>

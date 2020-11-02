@@ -65,7 +65,7 @@ class App extends Component {
 
         this.props.setTotalItemsAction(response.totalItems);
         this.props.setDataAction(response.items);
-        this.setState({$valueFind: name});
+        this.setState({$valueFind: this.props.filterValue});
     }
 
     handleChange(event) {
@@ -105,6 +105,7 @@ class App extends Component {
             <div>
                 <div className="column column-bottom-border">
                     <FormControl className="item-two-on-row">
+                        <InputLabel>Текст поиска</InputLabel>
                         <Input
                             type="text" value={this.state.valueFind}
                             onChange={e => this.handleChange(e)}
@@ -127,16 +128,16 @@ class App extends Component {
                             }
                         />
                     </FormControl>
-                    <Tooltip title="Точное соответствие" placement="bottom">
-                        <FormControlLabel
-                                          control={
-                                              <Checkbox
-                                                  checked={this.state.isExact}
-                                                  onChange={e => this.handleInputChange(e)}
-                                                  color="primary"
-                                              />
-                                          }/>
-                    </Tooltip>
+                    {/*<Tooltip title="Точное соответствие" placement="bottom">*/}
+                    {/*    <FormControlLabel*/}
+                    {/*                      control={*/}
+                    {/*                          <Checkbox*/}
+                    {/*                              checked={this.state.isExact}*/}
+                    {/*                              onChange={e => this.handleInputChange(e)}*/}
+                    {/*                              color="primary"*/}
+                    {/*                          />*/}
+                    {/*                      }/>*/}
+                    {/*</Tooltip>*/}
                     <div className="item-two-on-row">
                         <FormControl className="item-half-on-row">
                             <InputLabel>Выберите место поиска</InputLabel>
@@ -254,15 +255,21 @@ class App extends Component {
         }
         if (prevProps.placeFind !== this.props.placeFind) {
             if (this.props.filterValue !== '')
-                this.getDate(this.props.filterValue);
+                this.props.setStartIndexAction(0);
         }
         if (prevProps.startIndex !== this.props.startIndex) {
             if (this.props.filterValue !== '')
                 this.getDate(this.props.filterValue);
         }
         if (prevProps.maxResults !== this.props.maxResults) {
-            if (this.props.filterValue !== '')
-                this.getDate(this.props.filterValue);
+            if (prevProps.startIndex % this.props.maxResults === 0) {
+                if (this.props.filterValue !== '')
+                    this.getDate(this.props.filterValue);
+            }
+            else {
+                const newStartIndex = Math.floor(prevProps.startIndex / this.props.maxResults) * this.props.maxResults;
+                this.props.setStartIndexAction(newStartIndex);
+            }
         }
         if (prevProps.currentBook !== this.props.currentBook) {
             this.setState({ redirect: this.props.currentBook === null })
