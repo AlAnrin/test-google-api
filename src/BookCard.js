@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import missingImage from './images/1604222140385.png'
+import {mdiFileImageOutline} from '@mdi/js';
+import Icon from "@mdi/react";
 
 class BookCard extends Component {
     item = null;
@@ -20,7 +21,13 @@ class BookCard extends Component {
     render() {
         return (
             <div className="column book-row column-bottom-border">
-                <img alt={missingImage} src={this.item.volumeInfo?.imageLinks?.smallThumbnail}/>
+                {
+                    this.item.volumeInfo.imageLinks ?
+                        <img alt={this.item.volumeInfo.title} src={this.item.volumeInfo.imageLinks.thumbnail}/> :
+                        <div className="missing-image">
+                            <Icon className="missing-image-icon" path={mdiFileImageOutline} size={2}/>
+                        </div>
+                }
                 <div className="row book-info">
                     <span>{this.authors}</span>
                     <h3>{this.item.volumeInfo.title}</h3>

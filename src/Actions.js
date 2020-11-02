@@ -4,11 +4,19 @@ export const SET_CURRENT_BOOK = 'SET_CURRENT_BOOK';
 export const SET_START_INDEX = 'SET_START_INDEX';
 export const SET_MAX_RESULT = 'SET_MAX_RESULT';
 export const SET_FILTER_VALUE = 'SET_FILTER_VALUE';
+export const SET_PLACE_FIND = 'SET_PLACE_FIND';
 
 export function setFilterValue(filterValue) {
     return {
         type: SET_FILTER_VALUE,
         payload: filterValue
+    }
+}
+
+export function setPlaceFind(placeFind) {
+    return {
+        type: SET_PLACE_FIND,
+        payload: placeFind
     }
 }
 

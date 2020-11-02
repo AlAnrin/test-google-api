@@ -1,4 +1,4 @@
-import { SET_DATA, SET_TOTAL_ITEMS, SET_CURRENT_BOOK, SET_MAX_RESULT, SET_START_INDEX, SET_FILTER_VALUE } from './Actions'
+import { SET_DATA, SET_TOTAL_ITEMS, SET_CURRENT_BOOK, SET_MAX_RESULT, SET_START_INDEX, SET_FILTER_VALUE, SET_PLACE_FIND } from './Actions'
 
 const initialState = {
     baseUrl: 'https://www.googleapis.com/books/v1/volumes?q',
@@ -8,11 +8,17 @@ const initialState = {
     currentBook: null,
     totalItems: 0,
     startIndex: 0,
-    maxResults: 10
+    maxResults: 10,
+    placeFind: 0
 }
 
 export function Reducer(state = initialState, action) {
     switch (action.type) {
+        case SET_PLACE_FIND:
+            return {
+                ...state,
+                placeFind: action.payload
+            }
         case SET_FILTER_VALUE:
             return {
                 ...state,

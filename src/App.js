@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {BrowserRouter as Router, Route, NavLink, Redirect} from "react-router-dom";
-import {setFilterValue, setData, setCurrentBook, setTotalItems, setMaxResult, setStartIndex} from "./Actions";
+import {setFilterValue, setData, setCurrentBook, setTotalItems, setMaxResult, setStartIndex, setPlaceFind} from "./Actions";
 import BookCard from './BookCard';
 import BookDetail from './BookDetail';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -27,7 +27,8 @@ const mapStateToProps = store => {
         currentBook: store.currentBook,
         totalItems: store.totalItems,
         startIndex: store.startIndex,
-        maxResults: store.maxResults
+        maxResults: store.maxResults,
+        placeFind: store.placeFind
     };
 };
 
@@ -38,7 +39,8 @@ const mapDispatchToProps = dispatch => {
         setCurrentBookAction: currentBook => dispatch(setCurrentBook(currentBook)),
         setTotalItemsAction: totalItems => dispatch(setTotalItems(totalItems)),
         setMaxResultAction: maxResult => dispatch(setMaxResult(maxResult)),
-        setStartIndexAction: startIndex => dispatch(setStartIndex(startIndex))
+        setStartIndexAction: startIndex => dispatch(setStartIndex(startIndex)),
+        setPlaceFindAction: placeFind => dispatch(setPlaceFind(placeFind))
     }
 };
 
@@ -47,15 +49,14 @@ class App extends Component {
         redirect: false,
         isExact: false,
         $valueFind: '',
-        valueFind: '',
-        placeFind: 0,
+        valueFind: ''
     }
 
     getDate = async (name) => {
-        name = this.isExact ? `"${name.split(' ').join('+')}"` : name;
-        if (this.placeFind === 1)
+        name = this.state.isExact ? `"${name.split(' ').join('+')}"` : name;
+        if (this.props.placeFind === 1)
             name = `intitle:${name}`;
-        if (this.placeFind === 2)
+        if (this.props.placeFind === 2)
             name = `inauthor:${name}`;
         const url = `${this.props.baseUrl}=${name}&key=${this.props.api}&startIndex=${this.props.startIndex}&maxResults=${this.props.maxResults}`
         const api_call = await fetch(url);
@@ -76,8 +77,9 @@ class App extends Component {
     }
 
     handleSelectChange(event, value) {
-        if (value === 1)
-            this.setState({placeFind: event.target.value});
+        if (value === 1) {
+            this.props.setPlaceFindAction(event.target.value);
+        }
         else {
             this.props.setMaxResultAction(+event.target.value);
         }
@@ -102,7 +104,7 @@ class App extends Component {
         return (
             <div>
                 <div className="column column-bottom-border">
-                    <FormControl className="item-three-on-row">
+                    <FormControl className="item-two-on-row">
                         <Input
                             type="text" value={this.state.valueFind}
                             onChange={e => this.handleChange(e)}
@@ -125,27 +127,40 @@ class App extends Component {
                             }
                         />
                     </FormControl>
-                    <FormControlLabel className="item-three-on-row"
-                                      control={
-                                          <Checkbox
-                                              checked={this.state.isExact}
-                                              onChange={e => this.handleInputChange(e)}
-                                              color="primary"
-                                          />
-                                      }
-                                      label="Точное соответствие"
-                    />
-                    <FormControl className="item-three-on-row">
-                        <InputLabel>Выберите место поиска</InputLabel>
-                        <Select
-                            value={this.state.placeFind}
-                            onChange={e => this.handleSelectChange(e, 1)}
-                            autoWidth>
-                            <MenuItem value={0}>Везде</MenuItem>
-                            <MenuItem value={1}>Заголовке</MenuItem>
-                            <MenuItem value={2}>Автор</MenuItem>
-                        </Select>
-                    </FormControl>
+                    <Tooltip title="Точное соответствие" placement="bottom">
+                        <FormControlLabel
+                                          control={
+                                              <Checkbox
+                                                  checked={this.state.isExact}
+                                                  onChange={e => this.handleInputChange(e)}
+                                                  color="primary"
+                                              />
+                                          }/>
+                    </Tooltip>
+                    <div className="item-two-on-row">
+                        <FormControl className="item-half-on-row">
+                            <InputLabel>Выберите место поиска</InputLabel>
+                            <Select
+                                value={this.props.placeFind}
+                                onChange={e => this.handleSelectChange(e, 1)}
+                                autoWidth>
+                                <MenuItem value={0}>Везде</MenuItem>
+                                <MenuItem value={1}>Заголовке</MenuItem>
+                                <MenuItem value={2}>Автор</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <FormControl className="item-half-on-row">
+                            <InputLabel>Количество книг на страницу</InputLabel>
+                            <Select
+                                value={this.props.maxResults}
+                                onChange={e => this.handleSelectChange(e, 2)}
+                                autoWidth>
+                                <MenuItem value={10}>10</MenuItem>
+                                <MenuItem value={20}>20</MenuItem>
+                                <MenuItem value={40}>40</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
                 </div>
                 <Router>
                     {
@@ -157,30 +172,38 @@ class App extends Component {
                             this.props.currentBook === null &&
                             <div className="content">
                                 <div className="column">
-                                    <div className="item-two-on-row">
-                                        <IconButton disabled={this.props.startIndex === 0}
-                                                    onClick={() => this.props.setStartIndexAction(0)}
-                                                    color="primary">
+                                    <div className="item-five-on-row-with-center">
+                                        <IconButton
+                                            disabled={this.props.startIndex === 0}
+                                            onClick={() => this.props.setStartIndexAction(0)}
+                                            color="primary">
                                             <Icon path={mdiChevronDoubleLeft}
                                                   size={1}/>
                                         </IconButton>
-                                        <IconButton disabled={this.props.startIndex === 0}
+                                    </div>
+                                    <div className="item-five-on-row-with-center">
+                                        <IconButton
+                                                    disabled={this.props.startIndex === 0}
                                                     onClick={() => this.props.setStartIndexAction(this.props.startIndex - this.props.maxResults)}
                                                     color="primary">
                                             <Icon path={mdiChevronLeft}
                                                   size={1}/>
                                         </IconButton>
+                                    </div>
+                                    <div className="item-five-on-row-center">
                                         <Tooltip title="Текущая страница / общее количество страниц" aria-label="add">
-                                        <span>
-                                            {
-                                                Math.floor(((this.props.startIndex + 1) / this.props.maxResults) + 1)
-                                            }
-                                            /
-                                            {
-                                                Math.floor(this.props.totalItems / this.props.maxResults + 1)
-                                            }
-                                        </span>
+                                            <span>
+                                                {
+                                                    Math.floor(((this.props.startIndex + 1) / this.props.maxResults) + 1)
+                                                }
+                                                /
+                                                {
+                                                    Math.floor(this.props.totalItems / this.props.maxResults + 1)
+                                                }
+                                            </span>
                                         </Tooltip>
+                                    </div>
+                                    <div className="item-five-on-row-with-center">
                                         <IconButton
                                             disabled={this.props.startIndex + this.props.maxResults > this.props.totalItems}
                                             onClick={() => this.props.setStartIndexAction(this.props.startIndex + this.props.maxResults)}
@@ -188,6 +211,8 @@ class App extends Component {
                                             <Icon path={mdiChevronRight}
                                                   size={1}/>
                                         </IconButton>
+                                    </div>
+                                    <div className="item-five-on-row-with-center">
                                         <IconButton
                                             disabled={this.props.startIndex + this.props.maxResults > this.props.totalItems}
                                             onClick={() => this.props.setStartIndexAction(Math.floor(this.props.totalItems / this.props.maxResults) * this.props.maxResults)}
@@ -196,17 +221,6 @@ class App extends Component {
                                                   size={1}/>
                                         </IconButton>
                                     </div>
-                                    <FormControl className="item-two-on-row">
-                                        <InputLabel>Количество книг на страницу</InputLabel>
-                                        <Select
-                                            value={this.props.maxResults}
-                                            onChange={e => this.handleSelectChange(e, 2)}
-                                            autoWidth>
-                                            <MenuItem value={10}>10</MenuItem>
-                                            <MenuItem value={20}>20</MenuItem>
-                                            <MenuItem value={40}>40</MenuItem>
-                                        </Select>
-                                    </FormControl>
                                 </div>
                                 <div className="rowDays">
                                     {
@@ -232,9 +246,15 @@ class App extends Component {
             if (this.props.filterValue !== '')
                 this.getDate(this.props.filterValue);
             else {
+                this.setState({$valueFind: ''});
                 this.props.setDataAction([]);
                 this.props.setTotalItemsAction(0);
+                this.props.setStartIndexAction(0)
             }
+        }
+        if (prevProps.placeFind !== this.props.placeFind) {
+            if (this.props.filterValue !== '')
+                this.getDate(this.props.filterValue);
         }
         if (prevProps.startIndex !== this.props.startIndex) {
             if (this.props.filterValue !== '')

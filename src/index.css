@@ -13,6 +13,19 @@ img {
   width: 100px;
   margin: 10px 15px;
 }
+.missing-image {
+  height: 130px !important;
+  width: 100px !important;
+  margin: 10px 15px !important;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+}
+.missing-image-icon {
+  text-align: center;
+  margin: auto;
+  padding: 25px;
+}
 h3 {
   margin-top: 0;
 }
@@ -23,6 +36,12 @@ a {
 @media screen and (max-width: 500px) {
   img {
     width: 50px !important;
+  }
+  .missing-image {
+    width: 50px !important;
+  }
+  .missing-image-icon {
+    padding: 5px;
   }
   body {
     font-size: calc(7px + 1.5vmin);
@@ -40,11 +59,14 @@ select {
 .MuiFormControlLabel-root {
   margin-left: 5px !important;
 }
+.MuiIconButton-root {
+  padding: 5px !important;
+}
 .column {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 15px 5px;
+  padding: 10px 5px;
 }
 .column-bottom-border {
   border-bottom: 2px solid black;
@@ -53,9 +75,22 @@ select {
   width: calc(100vw/2);
   margin: 10px;
 }
+.item-half-on-row {
+  width: 50%;
+}
 .item-three-on-row {
-  width: calc(100vw/2.8);
-  margin: 5px;
+  width: calc(100vw/3);
+  margin: 5px !important;
+}
+.item-five-on-row-with-center {
+  width: calc(100vw/6);
+  margin: 5px !important;
+  text-align: center;
+}
+.item-five-on-row-center {
+  width: calc(100vw/2.5);
+  margin: 5px !important;
+  text-align: center;
 }
 .stretch-item {
   width: -moz-available;

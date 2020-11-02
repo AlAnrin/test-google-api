@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import missingImage from './images/1604222140385.png'
 import {connect} from "react-redux";
 import Icon from '@mdi/react';
-import {mdiArrowLeft, mdiCloseBox} from '@mdi/js';
+import {mdiArrowLeft, mdiFileImageOutline} from '@mdi/js';
 import {setCurrentBook} from "./Actions";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
@@ -40,8 +40,11 @@ class BookDetail extends Component {
             this.props.currentBook &&
             <div className="column">
                 {
-                    this.props.currentBook.volumeInfo.imageLinks &&
-                    <img alt={missingImage} src={this.props.currentBook.volumeInfo.imageLinks.thumbnail}/>
+                    this.props.currentBook.volumeInfo.imageLinks ?
+                        <img alt={missingImage} src={this.props.currentBook.volumeInfo.imageLinks.thumbnail}/> :
+                        <div className="missing-image">
+                            <Icon className="missing-image-icon" path={mdiFileImageOutline} size={2}/>
+                        </div>
                 }
                 <div className="book-info">
                     <div className="column">
