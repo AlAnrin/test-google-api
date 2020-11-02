@@ -139,28 +139,32 @@ class App extends Component {
                     {/*                      }/>*/}
                     {/*</Tooltip>*/}
                     <div className="item-two-on-row">
-                        <FormControl className="item-half-on-row">
-                            <InputLabel>Выберите место поиска</InputLabel>
-                            <Select
-                                value={this.props.placeFind}
-                                onChange={e => this.handleSelectChange(e, 1)}
-                                autoWidth>
-                                <MenuItem value={0}>Везде</MenuItem>
-                                <MenuItem value={1}>Заголовке</MenuItem>
-                                <MenuItem value={2}>Автор</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <FormControl className="item-half-on-row">
-                            <InputLabel>Количество книг на страницу</InputLabel>
-                            <Select
-                                value={this.props.maxResults}
-                                onChange={e => this.handleSelectChange(e, 2)}
-                                autoWidth>
-                                <MenuItem value={10}>10</MenuItem>
-                                <MenuItem value={20}>20</MenuItem>
-                                <MenuItem value={40}>40</MenuItem>
-                            </Select>
-                        </FormControl>
+                        <Tooltip title="Выберите место поиска" placement="bottom">
+                            <FormControl className="item-half-on-row">
+                                <InputLabel>Выберите место поиска</InputLabel>
+                                <Select
+                                    value={this.props.placeFind}
+                                    onChange={e => this.handleSelectChange(e, 1)}
+                                    autoWidth>
+                                    <MenuItem value={0}>Везде</MenuItem>
+                                    <MenuItem value={1}>Заголовке</MenuItem>
+                                    <MenuItem value={2}>Автор</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Tooltip>
+                        <Tooltip title="Количество книг на страницу" placement="bottom">
+                            <FormControl className="item-half-on-row">
+                                <InputLabel>Количество книг на страницу</InputLabel>
+                                <Select
+                                    value={this.props.maxResults}
+                                    onChange={e => this.handleSelectChange(e, 2)}
+                                    autoWidth>
+                                    <MenuItem value={10}>10</MenuItem>
+                                    <MenuItem value={20}>20</MenuItem>
+                                    <MenuItem value={40}>40</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Tooltip>
                     </div>
                 </div>
                 <Router>
@@ -184,9 +188,9 @@ class App extends Component {
                                     </div>
                                     <div className="item-five-on-row-with-center">
                                         <IconButton
-                                                    disabled={this.props.startIndex === 0}
-                                                    onClick={() => this.props.setStartIndexAction(this.props.startIndex - this.props.maxResults)}
-                                                    color="primary">
+                                            disabled={this.props.startIndex === 0}
+                                            onClick={() => this.props.setStartIndexAction(this.props.startIndex - this.props.maxResults)}
+                                            color="primary">
                                             <Icon path={mdiChevronLeft}
                                                   size={1}/>
                                         </IconButton>
@@ -223,7 +227,7 @@ class App extends Component {
                                         </IconButton>
                                     </div>
                                 </div>
-                                <div className="rowDays">
+                                <div className="row-books">
                                     {
                                         this.props.data && this.props.data.length !== 0 &&
                                         this.props.data.map(item =>

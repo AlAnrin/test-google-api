@@ -26,6 +26,10 @@ img {
   margin: auto;
   padding: 25px;
 }
+.row-books {
+  height: calc(100vh - 155px) !important;
+  overflow-y: scroll;
+}
 h3 {
   margin-top: 0;
 }
@@ -33,7 +37,7 @@ a {
   text-decoration: none;
   color: inherit;
 }
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 560px) {
   img {
     width: 50px !important;
   }
@@ -42,6 +46,9 @@ a {
   }
   .missing-image-icon {
     padding: 5px;
+  }
+  .MuiInputLabel-root {
+    display: none !important;
   }
   body {
     font-size: calc(7px + 1.5vmin);
