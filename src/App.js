@@ -254,8 +254,11 @@ class App extends Component {
             }
         }
         if (prevProps.placeFind !== this.props.placeFind) {
-            if (this.props.filterValue !== '')
-                this.props.setStartIndexAction(0);
+            if (this.props.filterValue !== '') {
+                if (this.props.startIndex !== 0)
+                    this.props.setStartIndexAction(0);
+                else this.getDate(this.props.filterValue);
+            }
         }
         if (prevProps.startIndex !== this.props.startIndex) {
             if (this.props.filterValue !== '')
