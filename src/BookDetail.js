@@ -60,9 +60,9 @@ class BookDetail extends Component {
                     <h3>{this.props.currentBook.volumeInfo.title}</h3>
                     <span>{this.props.currentBook.volumeInfo.description}</span>
                     <div className="row description">
-                        <span>Язык: {this.formatLanguage(this.props.currentBook.volumeInfo.language)}</span>
-                        <span>Дата публикации: {this.formatDate(this.props.currentBook.volumeInfo.publishedDate)}</span>
-                        <span>Количество страниц: {this.props.currentBook.volumeInfo.pageCount}</span>
+                        <span><i>Язык:</i> {this.formatLanguage(this.props.currentBook.volumeInfo.language)}</span>
+                        <span><i>Дата публикации:</i> {this.formatDate(this.props.currentBook.volumeInfo.publishedDate)}</span>
+                        <span><i>Количество страниц:</i> {this.props.currentBook.volumeInfo.pageCount}</span>
                     </div>
                 </div>
                 <Tooltip title="Назад" aria-label="add">

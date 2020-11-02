@@ -1,8 +1,9 @@
-import { SET_DATA, SET_TOTAL_ITEMS, SET_CURRENT_BOOK, SET_MAX_RESULT } from './Actions'
+import { SET_DATA, SET_TOTAL_ITEMS, SET_CURRENT_BOOK, SET_MAX_RESULT, SET_START_INDEX, SET_FILTER_VALUE } from './Actions'
 
 const initialState = {
     baseUrl: 'https://www.googleapis.com/books/v1/volumes?q',
     api: "AIzaSyBSgvdpNgfB_F992Tvobm3djh9Ie082AIM",
+    filterValue: '',
     data: [],
     currentBook: null,
     totalItems: 0,
@@ -12,6 +13,11 @@ const initialState = {
 
 export function Reducer(state = initialState, action) {
     switch (action.type) {
+        case SET_FILTER_VALUE:
+            return {
+                ...state,
+                filterValue: action.payload
+            }
         case SET_DATA:
             return {
                 ...state,
@@ -31,6 +37,11 @@ export function Reducer(state = initialState, action) {
             return {
                 ...state,
                 maxResults: action.payload
+            }
+        case SET_START_INDEX:
+            return {
+                ...state,
+                startIndex: action.payload
             }
         default:
             return state;

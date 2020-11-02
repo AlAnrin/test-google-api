@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {BrowserRouter as Router, Route, NavLink, Redirect} from "react-router-dom";
-import {setData, setCurrentBook, setTotalItems, setMaxResult} from "./Actions";
+import {setFilterValue, setData, setCurrentBook, setTotalItems, setMaxResult, setStartIndex} from "./Actions";
 import BookCard from './BookCard';
 import BookDetail from './BookDetail';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -13,7 +13,7 @@ import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@mdi/react';
-import { mdiFeatureSearch } from '@mdi/js';
+import { mdiFeatureSearch, mdiChevronDoubleLeft, mdiChevronDoubleRight, mdiChevronLeft, mdiChevronRight, mdiCloseBox } from '@mdi/js';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
@@ -22,6 +22,7 @@ const mapStateToProps = store => {
     return {
         baseUrl: store.baseUrl,
         api: store.api,
+        filterValue: store.filterValue,
         data: store.data,
         currentBook: store.currentBook,
         totalItems: store.totalItems,
@@ -32,10 +33,12 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        setFilterValueAction: filterValue => dispatch(setFilterValue(filterValue)),
         setDataAction: data => dispatch(setData(data)),
         setCurrentBookAction: currentBook => dispatch(setCurrentBook(currentBook)),
         setTotalItemsAction: totalItems => dispatch(setTotalItems(totalItems)),
-        setMaxResultAction: maxResult => dispatch(setMaxResult(maxResult))
+        setMaxResultAction: maxResult => dispatch(setMaxResult(maxResult)),
+        setStartIndexAction: startIndex => dispatch(setStartIndex(startIndex))
     }
 };
 
@@ -43,6 +46,7 @@ class App extends Component {
     state = {
         redirect: false,
         isExact: false,
+        $valueFind: '',
         valueFind: '',
         placeFind: 0,
     }
@@ -60,6 +64,7 @@ class App extends Component {
 
         this.props.setTotalItemsAction(response.totalItems);
         this.props.setDataAction(response.items);
+        this.setState({$valueFind: name});
     }
 
     handleChange(event) {
@@ -78,10 +83,18 @@ class App extends Component {
         }
     }
 
+    checkCanLoadNewData() {
+        return this.state.valueFind.length > 1 && this.state.valueFind !== this.state.$valueFind;
+    }
+
+    clearFilterValueEvent(event) {
+        this.setState({valueFind: ''});
+        this.props.setFilterValueAction('');
+    }
+
     keyPressEvent(event) {
-        if (event.key === 'Enter' && this.state.valueFind.length > 1) {
-            console.log(this.state.valueFind);
-            this.getDate(this.state.valueFind);
+        if (event.key === 'Enter' && this.checkCanLoadNewData()) {
+            this.props.setFilterValueAction(this.state.valueFind);
         }
     }
 
@@ -96,7 +109,13 @@ class App extends Component {
                             onKeyPress={e => this.keyPressEvent(e)}
                             endAdornment={
                                 <InputAdornment position="end">
-                                    <IconButton disabled={this.state.valueFind.length < 1}
+                                    <IconButton disabled={this.state.valueFind === ''}
+                                                onClick={e => this.clearFilterValueEvent(e)}
+                                                color="primary">
+                                        <Icon className="search-icon-button" path={mdiCloseBox}
+                                              size={1}/>
+                                    </IconButton>
+                                    <IconButton disabled={!this.checkCanLoadNewData()}
                                                 onClick={e => this.keyPressEvent({key: 'Enter'})}
                                                 color="primary">
                                         <Icon className="search-icon-button" path={mdiFeatureSearch}
@@ -134,40 +153,50 @@ class App extends Component {
                         <Redirect to='/'/>
                     }
                     <Route path="/">
-                    {
-                        this.props.currentBook === null &&
-                        <div className="content">
-                            <div className="rowDays">
-                                {
-                                    this.props.data && this.props.data.length !== 0 &&
-                                    this.props.data.map(item =>
-                                        <NavLink key={item.id} to={item.id}
-                                                 onClick={() => this.props.setCurrentBookAction(item)}>
-                                            <BookCard date={item}/>
-                                        </NavLink>
-                                    )
-                                }
-                            </div>
-                            {
-                                this.props.data && this.props.data.length !== 0 &&
+                        {
+                            this.props.currentBook === null &&
+                            <div className="content">
                                 <div className="column">
-                                    <label className="item-three-on-row">
+                                    <div className="item-two-on-row">
+                                        <IconButton disabled={this.props.startIndex === 0}
+                                                    onClick={() => this.props.setStartIndexAction(0)}
+                                                    color="primary">
+                                            <Icon path={mdiChevronDoubleLeft}
+                                                  size={1}/>
+                                        </IconButton>
+                                        <IconButton disabled={this.props.startIndex === 0}
+                                                    onClick={() => this.props.setStartIndexAction(this.props.startIndex - this.props.maxResults)}
+                                                    color="primary">
+                                            <Icon path={mdiChevronLeft}
+                                                  size={1}/>
+                                        </IconButton>
                                         <Tooltip title="Текущая страница / общее количество страниц" aria-label="add">
-                                            <span>
-                                                {
-                                                    Math.floor(((this.props.startIndex + 1) / this.props.maxResults) + 1)
-                                                }
-                                                    /
-                                                {
-                                                    Math.floor(this.props.totalItems / this.props.maxResults + 1)
-                                                }
-                                            </span>
+                                        <span>
+                                            {
+                                                Math.floor(((this.props.startIndex + 1) / this.props.maxResults) + 1)
+                                            }
+                                            /
+                                            {
+                                                Math.floor(this.props.totalItems / this.props.maxResults + 1)
+                                            }
+                                        </span>
                                         </Tooltip>
-                                    </label>
-                                    <div className="item-three-on-row">
-                                        str
+                                        <IconButton
+                                            disabled={this.props.startIndex + this.props.maxResults > this.props.totalItems}
+                                            onClick={() => this.props.setStartIndexAction(this.props.startIndex + this.props.maxResults)}
+                                            color="primary">
+                                            <Icon path={mdiChevronRight}
+                                                  size={1}/>
+                                        </IconButton>
+                                        <IconButton
+                                            disabled={this.props.startIndex + this.props.maxResults > this.props.totalItems}
+                                            onClick={() => this.props.setStartIndexAction(Math.floor(this.props.totalItems / this.props.maxResults) * this.props.maxResults)}
+                                            color="primary">
+                                            <Icon path={mdiChevronDoubleRight}
+                                                  size={1}/>
+                                        </IconButton>
                                     </div>
-                                    <FormControl className="item-three-on-row">
+                                    <FormControl className="item-two-on-row">
                                         <InputLabel>Количество книг на страницу</InputLabel>
                                         <Select
                                             value={this.props.maxResults}
@@ -179,9 +208,19 @@ class App extends Component {
                                         </Select>
                                     </FormControl>
                                 </div>
-                            }
-                        </div>
-                    }
+                                <div className="rowDays">
+                                    {
+                                        this.props.data && this.props.data.length !== 0 &&
+                                        this.props.data.map(item =>
+                                            <NavLink key={item.id} to={item.id}
+                                                     onClick={() => this.props.setCurrentBookAction(item)}>
+                                                <BookCard date={item}/>
+                                            </NavLink>
+                                        )
+                                    }
+                                </div>
+                            </div>
+                        }
                     </Route>
                     <Route path="/:id" component={BookDetail}/>
                 </Router>
@@ -189,9 +228,21 @@ class App extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.filterValue !== this.props.filterValue) {
+            if (this.props.filterValue !== '')
+                this.getDate(this.props.filterValue);
+            else {
+                this.props.setDataAction([]);
+                this.props.setTotalItemsAction(0);
+            }
+        }
+        if (prevProps.startIndex !== this.props.startIndex) {
+            if (this.props.filterValue !== '')
+                this.getDate(this.props.filterValue);
+        }
         if (prevProps.maxResults !== this.props.maxResults) {
-            if (this.props.data.length !== 0)
-                this.getDate(this.valueFind);
+            if (this.props.filterValue !== '')
+                this.getDate(this.props.filterValue);
         }
         if (prevProps.currentBook !== this.props.currentBook) {
             this.setState({ redirect: this.props.currentBook === null })
