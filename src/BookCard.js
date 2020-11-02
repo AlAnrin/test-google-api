@@ -19,12 +19,20 @@ class BookCard extends Component {
 
     render() {
         return (
-            <div className="column">
+            <div className="column book-row column-bottom-border">
                 <img alt={missingImage} src={this.item.volumeInfo?.imageLinks?.smallThumbnail}/>
                 <div className="row book-info">
                     <span>{this.authors}</span>
                     <h3>{this.item.volumeInfo.title}</h3>
-                    <span>{this.item.volumeInfo.description}</span>
+                    {
+                        this.item.volumeInfo.description &&
+                        <span>
+                            {
+                                this.item.volumeInfo.description.substring(0, 150)
+                            }
+                            ...
+                        </span>
+                    }
                 </div>
             </div>
         )

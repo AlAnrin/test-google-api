@@ -4,6 +4,19 @@ import {BrowserRouter as Router, Route, NavLink, Redirect} from "react-router-do
 import {setData, setCurrentBook, setTotalItems, setMaxResult} from "./Actions";
 import BookCard from './BookCard';
 import BookDetail from './BookDetail';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Tooltip from '@material-ui/core/Tooltip';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import Icon from '@mdi/react';
+import { mdiFeatureSearch } from '@mdi/js';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+
 
 const mapStateToProps = store => {
     return {
@@ -59,9 +72,9 @@ class App extends Component {
 
     handleSelectChange(event, value) {
         if (value === 1)
-            this.setState({placeFind: +event.target.value});
+            this.setState({placeFind: event.target.value});
         else {
-            this.state.props.setMaxResultAction(+event.target.value);
+            this.props.setMaxResultAction(+event.target.value);
         }
     }
 
@@ -75,25 +88,45 @@ class App extends Component {
     render() {
         return (
             <div>
-                <div className="row">
-                    <input type="text" value={this.state.valueFind}
-                           onChange={e => this.handleChange(e)}
-                           onKeyPress={e => this.keyPressEvent(e)}/>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={this.state.isExact}
-                            onChange={e => this.handleInputChange(e)}/>
-                        Точное соответствие
-                    </label>
-                    <label>
-                        Выберите место поиска:
-                        <select value={this.state.placeFind} onChange={e => this.handleSelectChange(e, 1)}>
-                            <option value="0">Везде</option>
-                            <option value="1">Заголовке</option>
-                            <option value="2">Автор</option>
-                        </select>
-                    </label>
+                <div className="column column-bottom-border">
+                    <FormControl className="item-three-on-row">
+                        <Input
+                            type="text" value={this.state.valueFind}
+                            onChange={e => this.handleChange(e)}
+                            onKeyPress={e => this.keyPressEvent(e)}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton disabled={this.state.valueFind.length < 1}
+                                                onClick={e => this.keyPressEvent({key: 'Enter'})}
+                                                color="primary">
+                                        <Icon className="search-icon-button" path={mdiFeatureSearch}
+                                              size={1}/>
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+                    <FormControlLabel className="item-three-on-row"
+                                      control={
+                                          <Checkbox
+                                              checked={this.state.isExact}
+                                              onChange={e => this.handleInputChange(e)}
+                                              color="primary"
+                                          />
+                                      }
+                                      label="Точное соответствие"
+                    />
+                    <FormControl className="item-three-on-row">
+                        <InputLabel>Выберите место поиска</InputLabel>
+                        <Select
+                            value={this.state.placeFind}
+                            onChange={e => this.handleSelectChange(e, 1)}
+                            autoWidth>
+                            <MenuItem value={0}>Везде</MenuItem>
+                            <MenuItem value={1}>Заголовке</MenuItem>
+                            <MenuItem value={2}>Автор</MenuItem>
+                        </Select>
+                    </FormControl>
                 </div>
                 <Router>
                     {
@@ -115,19 +148,38 @@ class App extends Component {
                                     )
                                 }
                             </div>
-                            <div className="pagination">
-                                {Math.floor(((this.props.startIndex + 1) / this.props.maxResults) + 1)} / {Math.floor(this.props.totalItems / this.props.maxResults + 1)}
-
-                                <label>
-                                    Выберите количество на страницу
-                                    <select value={this.props.maxResults}
-                                            onChange={e => this.handleSelectChange(e, 2)}>
-                                        <option value="10">10</option>
-                                        <option value="20">20</option>
-                                        <option value="40">40</option>
-                                    </select>
-                                </label>
-                            </div>
+                            {
+                                this.props.data && this.props.data.length !== 0 &&
+                                <div className="column">
+                                    <label className="item-three-on-row">
+                                        <Tooltip title="Текущая страница / общее количество страниц" aria-label="add">
+                                            <span>
+                                                {
+                                                    Math.floor(((this.props.startIndex + 1) / this.props.maxResults) + 1)
+                                                }
+                                                    /
+                                                {
+                                                    Math.floor(this.props.totalItems / this.props.maxResults + 1)
+                                                }
+                                            </span>
+                                        </Tooltip>
+                                    </label>
+                                    <div className="item-three-on-row">
+                                        str
+                                    </div>
+                                    <FormControl className="item-three-on-row">
+                                        <InputLabel>Количество книг на страницу</InputLabel>
+                                        <Select
+                                            value={this.props.maxResults}
+                                            onChange={e => this.handleSelectChange(e, 2)}
+                                            autoWidth>
+                                            <MenuItem value={10}>10</MenuItem>
+                                            <MenuItem value={20}>20</MenuItem>
+                                            <MenuItem value={40}>40</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </div>
+                            }
                         </div>
                     }
                     </Route>
