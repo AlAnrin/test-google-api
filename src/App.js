@@ -112,7 +112,7 @@ class App extends Component {
                                     <IconButton disabled={this.state.valueFind === ''}
                                                 onClick={e => this.clearFilterValueEvent(e)}
                                                 color="primary">
-                                        <Icon className="search-icon-button" path={mdiCloseBox}
+                                        <Icon className="back-arrow-icon" path={mdiCloseBox}
                                               size={1}/>
                                     </IconButton>
                                     <IconButton disabled={!this.checkCanLoadNewData()}

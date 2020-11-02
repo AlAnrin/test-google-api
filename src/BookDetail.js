@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import missingImage from './images/1604222140385.png'
 import {connect} from "react-redux";
 import Icon from '@mdi/react';
-import { mdiArrowLeft } from '@mdi/js';
+import {mdiArrowLeft, mdiCloseBox} from '@mdi/js';
 import {setCurrentBook} from "./Actions";
 import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
 
 const mapStateToProps = store => {
     return {
@@ -66,10 +67,12 @@ class BookDetail extends Component {
                     </div>
                 </div>
                 <Tooltip title="Назад" aria-label="add">
-                    <button className="icon-button back-arrow-icon-button" onClick={() => this.props.setCurrentBookAction(null)}>
+                    <IconButton className="icon-button back-arrow-icon-button"
+                                onClick={() => this.props.setCurrentBookAction(null)}
+                                color="primary">
                         <Icon className="back-arrow-icon" path={mdiArrowLeft}
                               size={1}/>
-                    </button>
+                    </IconButton>
                 </Tooltip>
             </div>
         )
