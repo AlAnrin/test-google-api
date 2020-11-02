@@ -1,21 +1,20 @@
 {
   "files": {
     "main.css": "/test-google-api/static/css/main.e08641ef.chunk.css",
-    "main.js": "/test-google-api/static/js/main.66f5fa22.chunk.js",
-    "main.js.map": "/test-google-api/static/js/main.66f5fa22.chunk.js.map",
+    "main.js": "/test-google-api/static/js/main.1d18eb68.chunk.js",
+    "main.js.map": "/test-google-api/static/js/main.1d18eb68.chunk.js.map",
     "runtime-main.js": "/test-google-api/static/js/runtime-main.6667f424.js",
     "runtime-main.js.map": "/test-google-api/static/js/runtime-main.6667f424.js.map",
-    "static/js/2.6e1e1ccf.chunk.js": "/test-google-api/static/js/2.6e1e1ccf.chunk.js",
-    "static/js/2.6e1e1ccf.chunk.js.map": "/test-google-api/static/js/2.6e1e1ccf.chunk.js.map",
+    "static/js/2.7b6f53f8.chunk.js": "/test-google-api/static/js/2.7b6f53f8.chunk.js",
+    "static/js/2.7b6f53f8.chunk.js.map": "/test-google-api/static/js/2.7b6f53f8.chunk.js.map",
     "index.html": "/test-google-api/index.html",
     "static/css/main.e08641ef.chunk.css.map": "/test-google-api/static/css/main.e08641ef.chunk.css.map",
-    "static/js/2.6e1e1ccf.chunk.js.LICENSE.txt": "/test-google-api/static/js/2.6e1e1ccf.chunk.js.LICENSE.txt",
-    "static/media/1604222140385.747d97da.png": "/test-google-api/static/media/1604222140385.747d97da.png"
+    "static/js/2.7b6f53f8.chunk.js.LICENSE.txt": "/test-google-api/static/js/2.7b6f53f8.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.6667f424.js",
-    "static/js/2.6e1e1ccf.chunk.js",
+    "static/js/2.7b6f53f8.chunk.js",
     "static/css/main.e08641ef.chunk.css",
-    "static/js/main.66f5fa22.chunk.js"
+    "static/js/main.1d18eb68.chunk.js"
   ]
 }
