@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/test-google-api/static/css/main.e08641ef.chunk.css",
-    "main.js": "/test-google-api/static/js/main.2151f6ed.chunk.js",
-    "main.js.map": "/test-google-api/static/js/main.2151f6ed.chunk.js.map",
+    "main.css": "/test-google-api/static/css/main.0524c0e2.chunk.css",
+    "main.js": "/test-google-api/static/js/main.5ebe7ad5.chunk.js",
+    "main.js.map": "/test-google-api/static/js/main.5ebe7ad5.chunk.js.map",
     "runtime-main.js": "/test-google-api/static/js/runtime-main.6667f424.js",
     "runtime-main.js.map": "/test-google-api/static/js/runtime-main.6667f424.js.map",
     "static/js/2.7b6f53f8.chunk.js": "/test-google-api/static/js/2.7b6f53f8.chunk.js",
     "static/js/2.7b6f53f8.chunk.js.map": "/test-google-api/static/js/2.7b6f53f8.chunk.js.map",
     "index.html": "/test-google-api/index.html",
-    "static/css/main.e08641ef.chunk.css.map": "/test-google-api/static/css/main.e08641ef.chunk.css.map",
+    "static/css/main.0524c0e2.chunk.css.map": "/test-google-api/static/css/main.0524c0e2.chunk.css.map",
     "static/js/2.7b6f53f8.chunk.js.LICENSE.txt": "/test-google-api/static/js/2.7b6f53f8.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.6667f424.js",
     "static/js/2.7b6f53f8.chunk.js",
-    "static/css/main.e08641ef.chunk.css",
-    "static/js/main.2151f6ed.chunk.js"
+    "static/css/main.0524c0e2.chunk.css",
+    "static/js/main.5ebe7ad5.chunk.js"
   ]
 }
