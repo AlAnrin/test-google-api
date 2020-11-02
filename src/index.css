@@ -24,6 +24,10 @@ h3 {
     font-size: calc(7px + 1.5vmin);
   }
 }
+input, button {
+  outline: none;
+  font: inherit;
+}
 .column {
   display: flex;
   flex-direction: row;
@@ -37,4 +41,18 @@ h3 {
 }
 .book-info {
   margin: 5px
+}
+.back-arrow-icon-button {
+  position: absolute;
+  top: 100px;
+  left: 50px;
+  z-index: 999;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: none !important;
+}
+.back-arrow-icon:hover {
+  color: red
 }

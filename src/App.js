@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+import {BrowserRouter as Router, Route, NavLink, Redirect} from "react-router-dom";
 import {setData, setCurrentBook, setTotalItems, setMaxResult} from "./Actions";
 import BookCard from './BookCard';
 import BookDetail from './BookDetail';
@@ -27,9 +27,12 @@ const mapDispatchToProps = dispatch => {
 };
 
 class App extends Component {
-    isExact = false;
-    valueFind = '';
-    placeFind = 0;
+    state = {
+        redirect: false,
+        isExact: false,
+        valueFind: '',
+        placeFind: 0,
+    }
 
     getDate = async (name) => {
         name = this.isExact ? `"${name.split(' ').join('+')}"` : name;
@@ -47,25 +50,25 @@ class App extends Component {
     }
 
     handleChange(event) {
-        this.valueFind = event.target.value;
+        this.setState({valueFind: event.target.value});
     }
 
     handleInputChange(event) {
-        this.isExact = event.target.checked;
+        this.setState({isExact: event.target.checked});
     }
 
     handleSelectChange(event, value) {
         if (value === 1)
-            this.placeFind = +event.target.value;
+            this.setState({placeFind: +event.target.value});
         else {
-            this.props.setMaxResultAction(+event.target.value);
+            this.state.props.setMaxResultAction(+event.target.value);
         }
     }
 
     keyPressEvent(event) {
-        if (event.key === 'Enter' && this.valueFind.length > 1) {
-            console.log(this.valueFind);
-            this.getDate(this.valueFind);
+        if (event.key === 'Enter' && this.state.valueFind.length > 1) {
+            console.log(this.state.valueFind);
+            this.getDate(this.state.valueFind);
         }
     }
 
@@ -73,19 +76,19 @@ class App extends Component {
         return (
             <div>
                 <div className="row">
-                    <input type="text" value={this.props.valueFind}
+                    <input type="text" value={this.state.valueFind}
                            onChange={e => this.handleChange(e)}
                            onKeyPress={e => this.keyPressEvent(e)}/>
                     <label>
                         <input
                             type="checkbox"
-                            checked={this.props.isExact}
+                            checked={this.state.isExact}
                             onChange={e => this.handleInputChange(e)}/>
                         Точное соответствие
                     </label>
                     <label>
                         Выберите место поиска:
-                        <select value={this.props.placeFind} onChange={e => this.handleSelectChange(e, 1)}>
+                        <select value={this.state.placeFind} onChange={e => this.handleSelectChange(e, 1)}>
                             <option value="0">Везде</option>
                             <option value="1">Заголовке</option>
                             <option value="2">Автор</option>
@@ -93,30 +96,42 @@ class App extends Component {
                     </label>
                 </div>
                 <Router>
-                    <div className="content">
-                        <div className="rowDays">
-                            {
-                                this.props.data && this.props.data.length !== 0 &&
-                                this.props.data.map(item =>
-                                    <BookCard key={item.id} date={item}/>
-                                )
-                            }
-                        </div>
-                        <div className="pagination">
-                            {Math.floor(((this.props.startIndex + 1) / this.props.maxResults) + 1)} / {Math.floor(this.props.totalItems / this.props.maxResults + 1)}
+                    {
+                        this.state.redirect &&
+                        <Redirect to='/'/>
+                    }
+                    <Route path="/">
+                    {
+                        this.props.currentBook === null &&
+                        <div className="content">
+                            <div className="rowDays">
+                                {
+                                    this.props.data && this.props.data.length !== 0 &&
+                                    this.props.data.map(item =>
+                                        <NavLink key={item.id} to={item.id}
+                                                 onClick={() => this.props.setCurrentBookAction(item)}>
+                                            <BookCard date={item}/>
+                                        </NavLink>
+                                    )
+                                }
+                            </div>
+                            <div className="pagination">
+                                {Math.floor(((this.props.startIndex + 1) / this.props.maxResults) + 1)} / {Math.floor(this.props.totalItems / this.props.maxResults + 1)}
 
-                            <label>
-                                Выберите количество на страницу
-                                <select value={this.props.maxResults}
-                                        onChange={e => this.handleSelectChange(e, 2)}>
-                                    <option value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="40">40</option>
-                                </select>
-                            </label>
+                                <label>
+                                    Выберите количество на страницу
+                                    <select value={this.props.maxResults}
+                                            onChange={e => this.handleSelectChange(e, 2)}>
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="40">40</option>
+                                    </select>
+                                </label>
+                            </div>
                         </div>
-                        <Route path="/:id" component={BookDetail} date={this.props.currentBook}/>
-                    </div>
+                    }
+                    </Route>
+                    <Route path="/:id" component={BookDetail}/>
                 </Router>
             </div>);
     }
@@ -125,6 +140,9 @@ class App extends Component {
         if (prevProps.maxResults !== this.props.maxResults) {
             if (this.props.data.length !== 0)
                 this.getDate(this.valueFind);
+        }
+        if (prevProps.currentBook !== this.props.currentBook) {
+            this.setState({ redirect: this.props.currentBook === null })
         }
     }
 }

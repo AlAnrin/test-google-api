@@ -20,7 +20,7 @@ export function Reducer(state = initialState, action) {
         case SET_CURRENT_BOOK:
             return {
                 ...state,
-                data: action.payload
+                currentBook: action.payload
             }
         case SET_TOTAL_ITEMS:
             return {
